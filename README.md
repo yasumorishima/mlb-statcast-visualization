@@ -1,17 +1,16 @@
-# MLB Statcast 打球分布の可視化 - 3つの方法
+# MLB Statcast Data Visualization
 
-Statcastデータで大谷翔平の打球分布（スプレーチャート）を3つの方法で可視化するサンプルコードです。
-
-Google Colabで実行できます。
+pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化するサンプルコードです。
 
 ## Notebooks
 
-| # | 方法 | Notebook | Open in Colab |
+| # | テーマ | Notebook | Open in Colab |
 |---|------|----------|---------------|
-| 1 | pybaseball `spraychart()` | `ohtani_1_spraychart_pybaseball.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_1_spraychart_pybaseball.ipynb) |
-| 2 | matplotlib 手動描画 | `ohtani_2_matplotlib_manual.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_2_matplotlib_manual.ipynb) |
+| 1 | 大谷翔平 スプレーチャート（spraychart） | `ohtani_1_spraychart_pybaseball.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_1_spraychart_pybaseball.ipynb) |
+| 2 | 大谷翔平 ヒートマップ（matplotlib手動描画） | `ohtani_2_matplotlib_manual.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_2_matplotlib_manual.ipynb) |
+| 3 | ダルビッシュ有 投球スタイル進化（2021-2025） | `darvish_evolution_2021_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/darvish_evolution_2021_2025.ipynb) |
 
-## 2つの方法の比較
+## スプレーチャート 2つの方法の比較
 
 | 項目 | 方法1 (spraychart) | 方法2 (matplotlib) |
 |------|-------------------|-------------------|
@@ -24,14 +23,14 @@ Google Colabで実行できます。
 ## セットアップ
 
 ```python
-!pip install pybaseball duckdb sportypy seaborn -q
+!pip install pybaseball duckdb seaborn -q
 ```
 
 ## 注意: game_typeフィルタ
 
 オープン戦のデータを除外するために、必ず`game_type = "R"`でフィルタしてください。
 
-## Statcast座標変換
+## Statcast座標変換（スプレーチャート用）
 
 ```python
 x = 2.5 * (hc_x - 125.42)  # ホームプレートを原点に
@@ -41,5 +40,4 @@ y = 2.5 * (198.27 - hc_y)  # Y軸を反転
 ## 参考
 
 - [pybaseball](https://github.com/jldbc/pybaseball)
-- [sportypy](https://github.com/sportsdataverse/sportypy)
 - [Baseball Savant](https://baseballsavant.mlb.com/)
