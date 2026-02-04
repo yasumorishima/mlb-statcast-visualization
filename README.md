@@ -10,17 +10,16 @@ Google Colabで実行できます。
 |---|------|----------|---------------|
 | 1 | pybaseball `spraychart()` | `ohtani_1_spraychart_pybaseball.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_1_spraychart_pybaseball.ipynb) |
 | 2 | matplotlib 手動描画 | `ohtani_2_matplotlib_manual.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_2_matplotlib_manual.ipynb) |
-| 3 | sportypy MLBField | `ohtani_3_sportypy.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_3_sportypy.ipynb) |
 
-## 3つの方法の比較
+## 2つの方法の比較
 
-| 項目 | 方法1 (spraychart) | 方法2 (matplotlib) | 方法3 (sportypy) |
-|------|-------------------|-------------------|-----------------|
-| **コード量** | 最小（1行） | 多い | 中程度 |
-| **座標変換** | 不要 | 必要 | 必要 |
-| **球場形状** | 30球団内蔵 | 自分で描く | MLB規格 |
-| **ヒートマップ** | 難しい | 容易 | 容易 |
-| **カスタマイズ** | 制限あり | 自由 | やや自由 |
+| 項目 | 方法1 (spraychart) | 方法2 (matplotlib) |
+|------|-------------------|-------------------|
+| **コード量** | 最小（1行） | 多い |
+| **座標変換** | 不要 | 必要 |
+| **球場形状** | 30球団内蔵 | 自分で描く |
+| **ヒートマップ** | 難しい | 容易 |
+| **カスタマイズ** | 制限あり | 自由 |
 
 ## セットアップ
 
