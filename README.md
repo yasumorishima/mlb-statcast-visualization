@@ -27,6 +27,28 @@ pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化・分�
 - **matplotlib / seaborn** で可視化
 - テキスト要約セル付き（Claude Codeとの共同分析用）
 
+## Past Analyses（過去の分析）
+
+以下は [mlb-data-analysis](https://github.com/yasumorishima/mlb-data-analysis) リポジトリの分析です。
+
+### スカウティング・投手分析
+
+| テーマ | 内容 | 手法 | Colab |
+|--------|------|------|-------|
+| WBC 2023 サンドバル スカウティング | 左打者にスライダー49.2%、被HR 0本 | pybaseball, seaborn | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-data-analysis/blob/main/notebooks/wbc_2023_sandoval_scouting.ipynb) |
+| バウアー セットポジション画像分析 | K-meansでグラブ位置の球種別の癖を検出 | PIL, scikit-learn | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-data-analysis/blob/main/notebooks/bauer_set_position_analysis_2023.ipynb) |
+
+### 打者分析・その他
+
+| テーマ | 内容 | 手法 | Colab |
+|--------|------|------|-------|
+| 大谷翔平 打撃分析（2022） | セカンド付近ヒット集中 →「大谷シフト」の根拠 | pybaseball, matplotlib | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-data-analysis/blob/main/notebooks/ohtani_batting_analysis_2022.ipynb) |
+| 大谷翔平 怪我予兆分析（2023） | 複数パラメーター±2σで投球異常を検出 | pybaseball, numpy | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-data-analysis/blob/main/notebooks/ohtani_injury_analysis_2023.ipynb) |
+| 大谷翔平 打球速度予測（Random Forest） | コース位置が予測の46%、球速は13%のみ | scikit-learn | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-data-analysis/blob/main/notebooks/ohtani_exit_velocity_random_forest.ipynb) |
+| MLB HR Race 2024 | バーチャートレースアニメーション | bar_chart_race | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-data-analysis/blob/main/notebooks/mlb_home_run_race_2024.ipynb) |
+
+> 上記の分析にはSQL版（DuckDB）も用意されています。詳細は [mlb-data-analysis](https://github.com/yasumorishima/mlb-data-analysis) を参照してください。
+
 ## セットアップ
 
 ```python
