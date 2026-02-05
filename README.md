@@ -8,6 +8,8 @@ pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化・分�
 
 | # | 選手 | テーマ | Notebook | Colab | 記事 |
 |---|------|--------|----------|-------|------|
+| 6 | 菊池雄星 | スライダー革命（2019-2025） | `kikuchi_2019_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/kikuchi_2019_2025.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/kikuchi-slider-revolution-2019-2025) |
+| 5 | 千賀滉大 | お化けフォーク（2023-2025） | `senga_2023_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/senga_2023_2025.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/senga-ghost-fork-analysis-2023-2025) |
 | 4 | 今永昇太 | 2年目の変化（2024-2025） | `imanaga_2024_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/imanaga_2024_2025.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/imanaga-2nd-year-analysis-2024-2025) |
 | 3 | ダルビッシュ有 | 投球スタイル進化（2021-2025） | `darvish_evolution_2021_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/darvish_evolution_2021_2025.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/darvish-pitching-evolution-2021-2025) |
 
