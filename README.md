@@ -1,24 +1,31 @@
 # MLB Statcast Data Visualization
 
-pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化するサンプルコードです。
+pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化・分析するプロジェクトです。
 
 ## Notebooks
 
-| # | テーマ | Notebook | Open in Colab |
-|---|------|----------|---------------|
-| 1 | 大谷翔平 スプレーチャート（spraychart） | `ohtani_1_spraychart_pybaseball.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_1_spraychart_pybaseball.ipynb) |
-| 2 | 大谷翔平 ヒートマップ（matplotlib手動描画） | `ohtani_2_matplotlib_manual.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_2_matplotlib_manual.ipynb) |
-| 3 | ダルビッシュ有 投球スタイル進化（2021-2025） | `darvish_evolution_2021_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/darvish_evolution_2021_2025.ipynb) |
+### 投手分析
 
-## スプレーチャート 2つの方法の比較
+| # | 選手 | テーマ | Notebook | Colab | 記事 |
+|---|------|--------|----------|-------|------|
+| 4 | 今永昇太 | 2年目の変化（2024-2025） | `imanaga_2024_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/imanaga_2024_2025.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/imanaga-2nd-year-analysis-2024-2025) |
+| 3 | ダルビッシュ有 | 投球スタイル進化（2021-2025） | `darvish_evolution_2021_2025.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/darvish_evolution_2021_2025.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/darvish-pitching-evolution-2021-2025) |
 
-| 項目 | 方法1 (spraychart) | 方法2 (matplotlib) |
-|------|-------------------|-------------------|
-| **コード量** | 最小（1行） | 多い |
-| **座標変換** | 不要 | 必要 |
-| **球場形状** | 30球団内蔵 | 自分で描く |
-| **ヒートマップ** | 難しい | 容易 |
-| **カスタマイズ** | 制限あり | 自由 |
+### 打者分析
+
+| # | 選手 | テーマ | Notebook | Colab | 記事 |
+|---|------|--------|----------|-------|------|
+| 2 | 大谷翔平 | ヒートマップ（matplotlib手動描画） | `ohtani_2_matplotlib_manual.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_2_matplotlib_manual.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/matplotlib-baseball-heatmap) |
+| 1 | 大谷翔平 | スプレーチャート（spraychart） | `ohtani_1_spraychart_pybaseball.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yasumorishima/mlb-statcast-visualization/blob/main/ohtani_1_spraychart_pybaseball.ipynb) | [Zenn](https://zenn.dev/yasumorishima/articles/pybaseball-spraychart-ohtani) |
+
+## 分析手法
+
+各ノートブックで共通して使用している手法：
+
+- **pybaseball** でStatcastデータ取得
+- **DuckDB** でSQLベースのデータ集計（pandas操作より可読性重視）
+- **matplotlib / seaborn** で可視化
+- テキスト要約セル付き（Claude Codeとの共同分析用）
 
 ## セットアップ
 
@@ -29,13 +36,6 @@ pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化する�
 ## 注意: game_typeフィルタ
 
 オープン戦のデータを除外するために、必ず`game_type = "R"`でフィルタしてください。
-
-## Statcast座標変換（スプレーチャート用）
-
-```python
-x = 2.5 * (hc_x - 125.42)  # ホームプレートを原点に
-y = 2.5 * (198.27 - hc_y)  # Y軸を反転
-```
 
 ## 参考
 
