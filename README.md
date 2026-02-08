@@ -2,6 +2,18 @@
 
 pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化・分析するプロジェクトです。
 
+## Dataset
+
+このプロジェクトで使用している日本人MLB選手のStatcastデータをKaggleで公開しています。
+
+**[Japan MLB Pitchers Batters Statcast (2015-2025)](https://www.kaggle.com/datasets/yasunorim/japan-mlb-pitchers-batters-statcast)**
+
+- 投手25名、118,226投球（2015-2025）
+- 打者10名、56,362打撃（2015-2025）
+- 選手メタデータ（34選手）
+
+このデータセットを使えば、下記のノートブックと同様の分析を自分でも再現できます。
+
 ## Notebooks
 
 ### 投手分析
