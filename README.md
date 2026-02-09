@@ -2,9 +2,11 @@
 
 pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化・分析するプロジェクトです。
 
-## Dataset
+## Datasets
 
-このプロジェクトで使用している日本人MLB選手のStatcastデータをKaggleで公開しています。
+このプロジェクトで使用しているMLB Statcastデータや関連データをKaggleで公開しています。
+
+### 主要データセット
 
 **[Japan MLB Pitchers Batters Statcast (2015-2025)](https://www.kaggle.com/datasets/yasunorim/japan-mlb-pitchers-batters-statcast)**
 
@@ -13,6 +15,15 @@ pybaseball + DuckDB + Google Colabで、MLB Statcastデータを可視化・分�
 - 選手メタデータ（34選手）
 
 このデータセットを使えば、下記のノートブックと同様の分析を自分でも再現できます。
+
+### 関連データセット
+
+| Dataset | Description | Kaggle |
+|---------|-------------|--------|
+| [MLB Pitcher Arsenal Evolution (2020-2025)](https://www.kaggle.com/datasets/yasunorim/mlb-pitcher-arsenal-2020-2025) | 投手の球種構成と成績（4,253投手シーズン、111指標） | [View](https://www.kaggle.com/datasets/yasunorim/mlb-pitcher-arsenal-2020-2025) |
+| [MLB Bat Tracking (2024-2025)](https://www.kaggle.com/datasets/yasunorim/mlb-bat-tracking-2024-2025) | バット速度・スイング指標（452打者、19指標） | [View](https://www.kaggle.com/datasets/yasunorim/mlb-bat-tracking-2024-2025) |
+
+📋 **全データセットの詳細**: [kaggle-datasets](https://github.com/yasumorishima/kaggle-datasets)
 
 ## Notebooks
 
