@@ -1,4 +1,4 @@
-!pip install pybaseball duckdb -q
+# !pip install pybaseball duckdb -q  # uncomment in Colab/notebook
 
 import pandas as pd
 import numpy as np

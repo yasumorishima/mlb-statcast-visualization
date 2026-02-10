@@ -1,4 +1,4 @@
-!pip install pybaseball duckdb -q
+# !pip install pybaseball duckdb -q  # uncomment in Colab/notebook
 
 from pybaseball import statcast
 import duckdb
