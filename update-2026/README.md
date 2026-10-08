@@ -17,7 +17,9 @@ Every (season, pitch type) that is drawn is compared with Savant's own pitch-mov
 | Share of pitches | < 0.002 | max 0.00017 (after folding KC into CU) |
 | Movement (in) | < 0.15 | vertical max 0.08, horizontal max 0.13 |
 
-Of the 111 drawn rows, 9 are absent from Savant's leaderboard because it has a minimum pitch count. They are not checked.
+Of the 111 drawn rows, 9 are absent from Savant's leaderboard because it has a minimum pitch count, so they are not checked. All 9 are 3-5% shares, and the script prints them. The run stops if any row a headline is built from is unchecked, or if fewer than 80% of any one pitcher's rows are checked. Savant gives only the size of the horizontal break, so the arm-side sign is checked separately: every file must have the pitcher's own throwing hand, and every four-seamer must come out on the arm side.
+
+Kikuchi's 2026 "splitter" has the speed and spin of his 2025 changeup (86.6 vs 85.6 mph, 1,592 vs 1,542 rpm) with about 5 in less arm-side run. The data cannot tell a new pitch from a relabelled one, so the title says only what the labels did.
 
 ## Conventions
 

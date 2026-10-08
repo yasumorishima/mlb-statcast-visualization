@@ -77,6 +77,8 @@ def season_table():
             assert set(d.pitcher.unique()) == {p["id"]}, (key, y)
             assert set(d.game_type.unique()) == {"R"}, (key, y)
             assert (d.game_year == y).all(), (key, y)
+            # The arm-side sign below depends on this; Savant's leaderboard only gives |break|.
+            assert set(d.p_throws.unique()) == {p["hand"]}, (key, y)
             d = d[d.pitch_type.notna() & ~d.pitch_type.isin(NOT_A_PITCH)].copy()
             d["pt"] = d.pitch_type.replace(FOLD)
             sign = 1.0 if p["hand"] == "L" else -1.0  # arm side positive
@@ -85,7 +87,17 @@ def season_table():
                 rows.append(dict(key=key, year=y, pt=pt, n=int(r.n), season_n=len(d),
                                  share=r.n / len(d), ivb=12 * r.ivb, hb_raw=12 * r.hb,
                                  arm=sign * 12 * r.hb))
-    return pd.DataFrame(rows)
+    t = pd.DataFrame(rows)
+    ff = t[(t.pt == "FF") & (t.n > 0)]
+    assert (ff.arm > 0).all(), "four-seamers must run to the arm side; the sign is wrong"
+    return t
+
+
+# Rows the headlines are built from: each must be confirmed by Savant.
+HEADLINE_ROWS = [("kikuchi", 2025, "CH"), ("kikuchi", 2026, "FS"),
+                 ("darvish", 2019, "SL"), ("darvish", 2025, "SL"), ("darvish", 2019, "SI"), ("darvish", 2025, "SI"),
+                 ("senga", 2025, "FF"), ("senga", 2026, "FF"), ("senga", 2025, "FC"), ("senga", 2026, "FC"),
+                 ("imanaga", 2024, "FF"), ("imanaga", 2025, "FF"), ("imanaga", 2026, "FF")]
 
 
 def check_against_savant(t):
@@ -93,7 +105,7 @@ def check_against_savant(t):
     from savant_extras import pitch_movement
 
     drawn = t[(t.season_n >= MIN_SEASON_PITCHES) & (t.share >= MIN_SHARE)]
-    bad, checked, lb_cache = [], 0, {}
+    bad, checked, lb_cache, seen, absent = [], 0, {}, set(), []
     gap = dict(count=0, share=0.0, ivb=0.0, hb=0.0)
     for (y, pt), grp in drawn.groupby(["year", "pt"]):
         if (y, pt) not in lb_cache:
@@ -103,9 +115,11 @@ def check_against_savant(t):
         for _, r in grp.iterrows():
             m = lb[lb.pitcher_id == PITCHERS[r.key]["id"]]
             if m.empty:
-                continue  # Savant's table has a minimum; absent rows are reported below
+                absent.append((r.key, int(y), pt, round(r.share, 3)))  # below Savant's minimum
+                continue
             m = m.iloc[0]
             checked += 1
+            seen.add((r.key, int(y), pt))
             gap['count'] = max(gap['count'], abs(int(m.pitches_thrown) - r.n))
             gap['share'] = max(gap['share'], abs(m.pitch_per - r.share))
             gap['ivb'] = max(gap['ivb'], abs(m.pitcher_break_z_induced - r.ivb))
@@ -125,8 +139,16 @@ def check_against_savant(t):
         for b in bad:
             print("MISMATCH", b)
         sys.exit("refusing to draw: numbers disagree with Savant")
-    if checked < 0.8 * len(drawn):
-        sys.exit(f"refusing to draw: only {checked}/{len(drawn)} rows could be checked")
+    for a in absent:
+        print("not on Savant's leaderboard (not checked):", a)
+    missing = [h for h in HEADLINE_ROWS if h not in seen]
+    if missing:
+        sys.exit(f"refusing to draw: headline rows not confirmed by Savant: {missing}")
+    for key in PITCHERS:
+        n_drawn = int((drawn.key == key).sum())
+        n_seen = sum(1 for s in seen if s[0] == key)
+        if n_seen < 0.8 * n_drawn:
+            sys.exit(f"refusing to draw: only {n_seen}/{n_drawn} of {key}'s rows could be checked")
 
 
 def share(t, key, y, pt):
@@ -143,8 +165,10 @@ def titles(t):
     s = lambda k, y, p: share(t, k, y, p)
     out = {}
     assert s("kikuchi", 2026, "CH") == 0 and s("kikuchi", 2025, "FS") == 0
-    out["kikuchi"] = (f"2026: a new splitter ({pct(s('kikuchi', 2026, 'FS'))}) "
-                      f"replaced the changeup ({pct(s('kikuchi', 2025, 'CH'))})")
+    # Same speed and spin as the old changeup, less arm-side run: the data cannot tell a new
+    # pitch from a relabelled one, so the title only says what the labels did.
+    out["kikuchi"] = (f"2026: no changeup (was {pct(s('kikuchi', 2025, 'CH'))}), "
+                      f"a “splitter” at {pct(s('kikuchi', 2026, 'FS'))}")
     assert s("darvish", 2025, "SL") < s("darvish", 2019, "SL") and s("darvish", 2025, "SI") > s("darvish", 2019, "SI")
     out["darvish"] = (f"Fewer sliders ({pct(s('darvish', 2019, 'SL'))} → {pct(s('darvish', 2025, 'SL'))}), "
                       f"more sinkers ({pct(s('darvish', 2019, 'SI'))} → {pct(s('darvish', 2025, 'SI'))})")
@@ -215,18 +239,20 @@ def draw(t, key, title, out_path):
             a, b = st_a.get(pt), st_b.get(pt)
             if a is None and b is None:
                 continue
+            # `label` is a real season share; only the dot size is interpolated while fading.
             if a is None:
-                x, y, sh, alpha = b[0], b[1], b[2] * e, e
+                x, y, sh, alpha, label = b[0], b[1], b[2] * e, e, b[2]
             elif b is None:
-                x, y, sh, alpha = a[0], a[1], a[2] * (1 - e), 1 - e
+                x, y, sh, alpha, label = a[0], a[1], a[2] * (1 - e), 1 - e, a[2]
             else:
                 x = a[0] + (b[0] - a[0]) * e
                 y = a[1] + (b[1] - a[1]) * e
                 sh, alpha = a[2] + (b[2] - a[2]) * e, 1.0
+                label = sh
             ax.scatter([x], [y], s=4000 * sh, color=COLORS.get(pt, "#777777"), alpha=0.85 * alpha,
                        edgecolor="white", linewidth=1.5, zorder=3)
             if alpha > 0.5:
-                ax.annotate(f"{NAMES.get(pt, pt)} {100 * sh:.0f}%", (x, y), xytext=(0, -np.sqrt(4000 * sh) / 2 - 12),
+                ax.annotate(f"{NAMES.get(pt, pt)} {100 * label:.0f}%", (x, y), xytext=(0, -np.sqrt(4000 * sh) / 2 - 12),
                             textcoords="offset points", ha="center", fontsize=12, color="#333333")
         year_text.set_text(year_label)
         note_text.set_text(note)
@@ -236,23 +262,20 @@ def draw(t, key, title, out_path):
     for i, y in enumerate(shown):
         st = state(y)
         gap = [g for g in skipped if (i > 0 and shown[i - 1] < g < y)]
-        note = "; ".join(f"{g}: {skipped[g]} pitches, not shown" for g in gap)
-        for _ in range(1):
-            render(st, st, 0.0, str(y), note)
-            durations.append(1400 if i < len(shown) - 1 else 3500)
+        notes = [f"{g}: {skipped[g]} pitches, not shown" for g in gap]
+        if i == len(shown) - 1:  # seasons after the last drawn one go on the final frame
+            notes += [f"{g}: {'no' if skipped[g] == 0 else skipped[g]} MLB pitches"
+                      for g in skipped if g > y]
+        render(st, st, 0.0, str(y), "; ".join(notes))
+        durations.append(1400 if i < len(shown) - 1 else 3500)
         if i + 1 < len(shown):
             nxt = state(shown[i + 1])
             for k in range(1, 9):
                 render(st, nxt, k / 9, f"{y}→{shown[i + 1]}", "")
                 durations.append(70)
-    tail = [g for g in skipped if g > shown[-1]]
-    if tail:
-        for g in tail:
-            render(state(shown[-1]), state(shown[-1]), 0.0, str(shown[-1]),
-                   f"{g}: {'no' if skipped[g] == 0 else skipped[g]} MLB pitches")
-            durations.append(3500)
     plt.close(fig)
     pal = [f.quantize(colors=128, method=Image.Quantize.MEDIANCUT) for f in frames]
+    assert len(durations) == len(frames)
     pal[0].save(out_path, save_all=True, append_images=pal[1:], duration=durations, loop=0, optimize=True)
     return len(frames), sum(durations) / 1000, out_path.stat().st_size
 
